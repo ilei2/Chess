@@ -4,6 +4,7 @@ import Pieces.*;
 import Player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import Gui.*;
@@ -445,8 +446,11 @@ public class Board {
      * @return
      */
     public List<Pair> updateTileMoves(List<Pair> tileArray, List<Integer> tilesToRemove) {
+        Collections.sort(tilesToRemove, Collections.reverseOrder());
         for (int i=0; i < tilesToRemove.size(); i++) {
-            tileArray.remove(tileArray.get(i));
+            Integer index = tilesToRemove.get(i);
+//            Pair coord = tileArray.get(index);
+            tileArray.remove(tileArray.get(index));
         }
         return tileArray;
     }
@@ -499,10 +503,9 @@ public class Board {
                     blockTiles.add(coord);
                 }
             }
+            kingTiles = updateTileMoves(kingTiles, tilesToRemove);
+            tilesToRemove.clear();
         }
-
-        kingTiles = updateTileMoves(kingTiles, tilesToRemove);
-        tilesToRemove.clear();
 
         for(int i=0; i < userPieces.size(); i++) {
             Piece p = userPieces.get(i);

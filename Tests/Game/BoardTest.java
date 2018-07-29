@@ -63,6 +63,23 @@ public class BoardTest {
     }
 
     @Test
+    public void testBlackCheckMate() throws Exception {
+        initializeKings();
+        Tile tile = board.getTile(7,2);
+        tile.setPiece(blackKing);
+        tile = board.getTile(7,0);
+        Piece whiteRook = new Rook("WHITE");
+        tile.setPiece(whiteRook);
+        tile = board.getTile(6,0);
+        Piece whiteQueen = new Queen("WHITE");
+        tile.setPiece(whiteQueen);
+        board.whitePieces.add(whiteRook);
+        board.whitePieces.add(whiteQueen);
+        boolean checkMate = board.checkMate(board, "BLACK", "WHITE");
+        assertEquals(true, checkMate);
+    }
+
+    @Test
     public void testBlackCheck() throws Exception {
         initializeKings();
         Tile tile = board.getTile(7,2);
@@ -74,4 +91,19 @@ public class BoardTest {
         boolean check = board.check(board, "BLACK", "WHITE");
         assertEquals(true, check);
     }
+
+    @Test
+    public void testWhiteCheck() throws Exception {
+        initializeKings();
+        Tile tile = board.getTile(5,5);
+        tile.setPiece(whiteKing);
+        tile = board.getTile(5,0);
+        Piece blackRook = new Rook("BLACK");
+        tile.setPiece(blackRook);
+        board.blackPieces.add(blackRook);
+        boolean check = board.check(board, "WHITE", "BLACK");
+        assertEquals(true, check);
+    }
+
+
 }
