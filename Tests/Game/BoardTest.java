@@ -58,7 +58,7 @@ public class BoardTest {
         tile.setPiece(blackRook2);
         board.blackPieces.add(blackRook);
         board.blackPieces.add(blackRook2);
-        boolean checkMate = board.whiteCheckMate(board);
+        boolean checkMate = board.checkMate(board, "WHITE", "BLACK");
         assertEquals(true, checkMate);
     }
 

@@ -436,17 +436,26 @@ public class Gui {
      * Checks and updates status of the game
      */
     public void setTextStatus() {
-        // if (chessBoard.checkMate(chessBoard, 'WHITE', 'BLACK')
-        if (chessBoard.whiteCheckMate(chessBoard)) {
+        if (chessBoard.checkMate(chessBoard, "WHITE", "BLACK")) {
             textPanel.setWhiteCheckMate();
             endFlag = true;
             this.blackWins++;
         }
-        else if (chessBoard.blackCheckMate(chessBoard)) {
-            textPanel.setBlackCheckMate();
+        else if (chessBoard.checkMate(chessBoard, "BLACK", "WHITE")) {
+            textPanel.setWhiteCheckMate();
             endFlag = true;
-            this.whiteWins++;
+            this.blackWins++;
         }
+//        if (chessBoard.whiteCheckMate(chessBoard)) {
+//            textPanel.setWhiteCheckMate();
+//            endFlag = true;
+//            this.blackWins++;
+//        }
+//        else if (chessBoard.blackCheckMate(chessBoard)) {
+//            textPanel.setBlackCheckMate();
+//            endFlag = true;
+//            this.whiteWins++;
+//        }
         else if (chessBoard.blackStaleMate(chessBoard) || chessBoard.whiteStaleMate(chessBoard)) {
             textPanel.setStaleMate();
             endFlag = true;

@@ -439,122 +439,95 @@ public class Board {
     }
 
     /**
-     * blackCheckMate determines if the black player loses the game
-     * @param board the game board
-     * @return true if the black player loses, false otherwise
+     * Updates an arrayList containing coordinates of valid tile moves
+     * @param tileArray
+     * @param tilesToRemove
+     * @return
      */
-    public boolean blackCheckMate(Board board) {
-        if (!check(board, "BLACK", "WHITE")) {
-            return false;
+    public List<Pair> updateTileMoves(List<Pair> tileArray, List<Integer> tilesToRemove) {
+        for (int i=0; i < tilesToRemove.size(); i++) {
+            tileArray.remove(tileArray.get(i));
         }
-        Piece blackKing = getBlackKing();
-        int row = blackKing.getRow();
-        int col = blackKing.getCol();
-        board.getTile(row, col).removePiece();
-
-        List<Pair> kingTiles = new ArrayList<Pair>();
-        kingTiles = updateKingTiles(kingTiles, blackKing, board, row, col);
-
-        List<Pair> blockTiles = new ArrayList<Pair>();
-        List<Pair> attackingTiles = new ArrayList<Pair>();
-        attackingTiles = getAttackingTiles("BLACK", attackingTiles, board, row, col);
-
-        for(int i=0; i < whitePieces.size(); i++) {
-            Piece p = whitePieces.get(i);
-            for(int j=0; j < kingTiles.size(); j++) {
-                Pair coord = kingTiles.get(j);
-                if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    kingTiles.remove(coord);
-                    blockTiles.add(coord);
-                    j--;
-                }
-            }
-        }
-
-        for(int i=0; i < blackPieces.size(); i++) {
-            Piece p = blackPieces.get(i);
-            if (p.getType() != Type.KING) {
-                for (int j = 0; j < blockTiles.size(); j++) {
-                    Pair coord = blockTiles.get(j);
-                    if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                        blockTiles.remove(coord);
-                        kingTiles.add(coord);
-                        j--;
-                    }
-                }
-            }
-            for(int k=0; k < attackingTiles.size(); k++) {
-                Pair coord = attackingTiles.get(k);
-                if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    attackingTiles.remove(coord);
-                    k--;
-                }
-            }
-        }
-
-        board.getTile(row, col).setPiece(blackKing);
-        if (kingTiles.size() == 0 && attackingTiles.size() > 0) {
-            return true;
-        }
-
-        return false;
+        return tileArray;
     }
 
+
     /**
-     * whiteCheckMate determines if the white player loses the game
-     * @param board the game board
-     * @return true if the white player loses, false otherwise
+     * validates if there is a checkmate
+     * @param board the chess board
+     * @param user the player that could lose the game
+     * @param opponent the player that could win the game
+     * @return true or false
      */
-    public boolean whiteCheckMate(Board board) {
-        if (!check(board, "WHITE", "BLACK")) {
+    public boolean checkMate(Board board, String user, String opponent) {
+        if (!check(board, user, opponent)) {
             return false;
         }
-        Piece whiteKing = getWhiteKing();
-        int row = whiteKing.getRow();
-        int col = whiteKing.getCol();
+
+        Piece king;
+        List<Piece> opponentPieces;
+        List<Piece> userPieces;
+
+        if (user == "WHITE") {
+            king = getWhiteKing();
+            userPieces = whitePieces;
+            opponentPieces = blackPieces;
+        }
+        else {
+            king = getBlackKing();
+            userPieces = blackPieces;
+            opponentPieces = whitePieces;
+        }
+        int row = king.getRow();
+        int col = king.getCol();
         board.getTile(row, col).removePiece();
 
         List<Pair> kingTiles = new ArrayList<Pair>();
-        kingTiles = updateKingTiles(kingTiles, whiteKing, board, row, col);
-
         List<Pair> blockTiles = new ArrayList<Pair>();
         List<Pair> attackingTiles = new ArrayList<Pair>();
-        attackingTiles = getAttackingTiles("BLACK", attackingTiles, board, row, col);
+        List<Integer> tilesToRemove = new ArrayList<>();
 
-        for(int i=0; i < blackPieces.size(); i++) {
-            Piece p = blackPieces.get(i);
+        kingTiles = updateKingTiles(kingTiles, king, board, row, col);
+        attackingTiles = getAttackingTiles(opponent, attackingTiles, board, row, col);
+
+        for(int i=0; i < opponentPieces.size(); i++) {
+            Piece p = opponentPieces.get(i);
             for(int j=0; j < kingTiles.size(); j++) {
                 Pair coord = kingTiles.get(j);
                 if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    kingTiles.remove(coord);
+                    tilesToRemove.add(j);
                     blockTiles.add(coord);
-                    j--;
                 }
             }
         }
 
-        for(int i=0; i < whitePieces.size(); i++) {
-            Piece p = whitePieces.get(i);
+        kingTiles = updateTileMoves(kingTiles, tilesToRemove);
+        tilesToRemove.clear();
+
+        for(int i=0; i < userPieces.size(); i++) {
+            Piece p = userPieces.get(i);
             if (p.getType() != Type.KING) {
                 for (int j = 0; j < blockTiles.size(); j++) {
                     Pair coord = blockTiles.get(j);
                     if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                        blockTiles.remove(coord);
                         kingTiles.add(coord);
-                        j--;
+                        tilesToRemove.add(j);
                     }
                 }
+                blockTiles = updateTileMoves(blockTiles, tilesToRemove);
+                tilesToRemove.clear();
             }
             for(int k=0; k < attackingTiles.size(); k++) {
                 Pair coord = attackingTiles.get(k);
                 if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    attackingTiles.remove(coord);
-                    k--;
+                    tilesToRemove.add(k);
                 }
             }
+            attackingTiles = updateTileMoves(attackingTiles, tilesToRemove);
+            tilesToRemove.clear();
         }
 
-        board.getTile(row, col).setPiece(whiteKing);
+        board.getTile(row, col).setPiece(king);
 
         if (kingTiles.size() == 0 && attackingTiles.size() > 0) {
             return true;
@@ -715,9 +688,6 @@ public class Board {
      * @return true if player cannot move, false otherwise.
      */
     public boolean blackStaleMate(Board board) {
-//        if (blackCheck(board)) {
-//            return false;
-//        }
         if (check(board, "BLACK", "WHITE")) {
             return false;
         }
