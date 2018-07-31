@@ -457,42 +457,16 @@ public class Board {
 
 
     /**
-     * validates if there is a checkmate
-     * @param board the chess board
-     * @param user the player that could lose the game
-     * @param opponent the player that could win the game
-     * @return true or false
+     * Eliminate moves the king can make based on opponent's checks
+     * @param board
+     * @param array
+     * @return
      */
-    public boolean checkMate(Board board, String user, String opponent) {
-        if (!check(board, user, opponent)) {
-            return false;
-        }
-
-        Piece king;
-        List<Piece> opponentPieces;
-        List<Piece> userPieces;
-
-        if (user == "WHITE") {
-            king = getWhiteKing();
-            userPieces = whitePieces;
-            opponentPieces = blackPieces;
-        }
-        else {
-            king = getBlackKing();
-            userPieces = blackPieces;
-            opponentPieces = whitePieces;
-        }
-        int row = king.getRow();
-        int col = king.getCol();
-        board.getTile(row, col).removePiece();
-
-        List<Pair> kingTiles = new ArrayList<Pair>();
-        List<Pair> blockTiles = new ArrayList<Pair>();
-        List<Pair> attackingTiles = new ArrayList<Pair>();
-        List<Integer> tilesToRemove = new ArrayList<>();
-
-        kingTiles = updateKingTiles(kingTiles, king, board, row, col);
-        attackingTiles = getAttackingTiles(opponent, attackingTiles, board, row, col);
+    public List<List> eliminateKingMoves(Board board, List<List> array) {
+        List<Pair> kingTiles = array.get(0);
+        List<Pair> blockTiles = array.get(1);
+        List<Piece> opponentPieces = array.get(2);
+        List<Integer> tilesToRemove = array.get(3);
 
         for(int i=0; i < opponentPieces.size(); i++) {
             Piece p = opponentPieces.get(i);
@@ -506,6 +480,27 @@ public class Board {
             kingTiles = updateTileMoves(kingTiles, tilesToRemove);
             tilesToRemove.clear();
         }
+
+        array.clear();
+        array.add(kingTiles);
+        array.add(blockTiles);
+        array.add(opponentPieces);
+        array.add(tilesToRemove);
+        return array;
+    }
+
+    /**
+     * checks if current player can eliminate pieces that are checking the king
+     * @param board the game board
+     * @param array array containing several lists of potential moves
+     * @return
+     */
+    public List<List> test2(Board board, List<List> array) {
+        List<Pair> kingTiles = array.get(0);
+        List<Pair> blockTiles = array.get(1);
+        List<Integer> tilesToRemove = array.get(2);
+        List<Piece> userPieces = array.get(3);
+        List<Pair> attackingTiles = array.get(4);
 
         for(int i=0; i < userPieces.size(); i++) {
             Piece p = userPieces.get(i);
@@ -529,6 +524,57 @@ public class Board {
             attackingTiles = updateTileMoves(attackingTiles, tilesToRemove);
             tilesToRemove.clear();
         }
+
+        array.clear();
+        array.add(kingTiles);
+        array.add(attackingTiles);
+        return array;
+    }
+
+    /**
+     * validates if there is a checkmate
+     * @param board the chess board
+     * @param user the player that could lose the game
+     * @param opponent the player that could win the game
+     * @return true or false
+     */
+    public boolean checkMate(Board board, String user, String opponent) {
+        if (!check(board, user, opponent)) {
+            return false;
+        }
+
+        Piece king = getKing(user);
+        List<List<Piece>> chessPieces = getPieces(user);
+        List<Piece> userPieces = chessPieces.get(0);
+        List<Piece> opponentPieces = chessPieces.get(1);
+
+        int row = king.getRow();
+        int col = king.getCol();
+        board.getTile(row, col).removePiece();
+
+        List<Pair> kingTiles = new ArrayList<Pair>();
+        List<Pair> blockTiles = new ArrayList<Pair>();
+        List<Pair> attackingTiles = new ArrayList<Pair>();
+        List<Integer> tilesToRemove = new ArrayList<>();
+
+        kingTiles = updateKingTiles(kingTiles, king, board, row, col);
+        attackingTiles = getAttackingTiles(opponent, attackingTiles, board, row, col);
+
+        List<List> array = new ArrayList<>();
+        array.add(kingTiles);
+        array.add(blockTiles);
+        array.add(opponentPieces);
+        array.add(tilesToRemove);
+
+        array = eliminateKingMoves(board, array);
+        array.remove(2);
+
+        array.add(userPieces);
+        array.add(attackingTiles);
+        array = test2(board, array);
+
+        kingTiles = array.get(0);
+        attackingTiles = array.get(1);
 
         board.getTile(row, col).setPiece(king);
 
@@ -612,148 +658,90 @@ public class Board {
         return (attack.contains(true));
     }
 
+    /**
+     * returns king piece
+     * @param user the current player
+     * @return
+     */
+    public Piece getKing(String user) {
+        if (user == "WHITE") {
+            return getWhiteKing();
+        }
+        else {
+            return getBlackKing();
+        }
+    }
+
+    public List<List<Piece>> getPieces(String user) {
+        List<List<Piece>> chessPieces = new ArrayList<>();
+        if (user == "WHITE") {
+            chessPieces.add(whitePieces);
+            chessPieces.add(blackPieces);
+        }
+        else {
+            chessPieces.add(blackPieces);
+            chessPieces.add(whitePieces);
+        }
+        return chessPieces;
+    }
+
 
     /**
-     * staleMate determines if the white player is at a stalemate.
-     * That is, the white player is not in check but has no legal moves.
+     * staleMate determines if a player is at a stalemate.
+     * That is, the current player is not in check but has no legal moves.
      * @param board the game board
      * @return true if player cannot move, false otherwise.
      */
-    public boolean whiteStaleMate(Board board) {
-        if (check(board, "WHITE", "BLACK")) {
+    public boolean staleMate(Board board, String user, String opponent) {
+        if (check(board, user, opponent)) {
             return false;
         }
 
-        Piece whiteKing = getWhiteKing();
-        int row = whiteKing.getRow();
-        int col = whiteKing.getCol();
+        Piece king = getKing(user);
+        List<List<Piece>> chessPieces = getPieces(user);
+        List<Piece> userPieces = chessPieces.get(0);
+        List<Piece> opponentPieces = chessPieces.get(1);
+
+        int row = king.getRow();
+        int col = king.getCol();
         board.getTile(row, col).removePiece();
 
         List<Pair> kingTiles = new ArrayList<Pair>();
-        kingTiles = updateKingTiles(kingTiles, whiteKing, board, row, col);
-
         List<Pair> blockTiles = new ArrayList<Pair>();
         List<Pair> attackingTiles = new ArrayList<Pair>();
-//        attackingTiles = getAttackingTilesWhiteKing(attackingTiles, board, row, col);
-        attackingTiles = getAttackingTiles("BLACK", attackingTiles, board, row, col);
+        List<Integer> tilesToRemove = new ArrayList<>();
+        kingTiles = updateKingTiles(kingTiles, king, board, row, col);
+        attackingTiles = getAttackingTiles(opponent, attackingTiles, board, row, col);
 
-        for(int i=0; i < blackPieces.size(); i++) {
-            Piece p = blackPieces.get(i);
-            for(int j=0; j < kingTiles.size(); j++) {
-                Pair coord = kingTiles.get(j);
-                if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    kingTiles.remove(coord);
-                    blockTiles.add(coord);
-                    j--;
-                }
-            }
-        }
+        List<List> array = new ArrayList<>();
+        array.add(kingTiles);
+        array.add(blockTiles);
+        array.add(opponentPieces);
+        array.add(tilesToRemove);
 
-        for(int i=0; i < whitePieces.size(); i++) {
-            Piece p = whitePieces.get(i);
-            if (p.getType() != Type.KING) {
-                for (int j = 0; j < blockTiles.size(); j++) {
-                    Pair coord = blockTiles.get(j);
-                    if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                        blockTiles.remove(coord);
-                        kingTiles.add(coord);
-                        j--;
-                    }
-                }
-            }
-            for(int k=0; k < attackingTiles.size(); k++) {
-                Pair coord = attackingTiles.get(k);
-                if (p.isAValidMove(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    attackingTiles.remove(coord);
-                    k--;
-                }
-            }
-        }
+        array = eliminateKingMoves(board, array);
+        array.remove(2);
 
-        board.getTile(row, col).setPiece(whiteKing);
+        array.add(userPieces);
+        array.add(attackingTiles);
+        array = test2(board, array);
+
+        kingTiles = array.get(0);
+
+        board.getTile(row, col).setPiece(king);
 
         if (kingTiles.size() == 0){
-            for(int i=0; i< whitePieces.size(); i++) {
-                Piece p = whitePieces.get(i);
+            for(int i=0; i< userPieces.size(); i++) {
+                Piece p = userPieces.get(i);
                 if (p.getType() != Type.KING && p.canMove(board)) {
                     return false;
                 }
             }
             return true;
         }
+
         return false;
     }
-
-    /**
-     * staleMate determines if the black player is at a stalemate.
-     * That is, the black player is not in check but has no legal moves.
-     * @param board the game board
-     * @return true if player cannot move, false otherwise.
-     */
-    public boolean blackStaleMate(Board board) {
-        if (check(board, "BLACK", "WHITE")) {
-            return false;
-        }
-
-        Piece blackKing = getBlackKing();
-        int row = blackKing.getRow();
-        int col = blackKing.getCol();
-        board.getTile(row, col).removePiece();
-
-        List<Pair> kingTiles = new ArrayList<Pair>();
-        kingTiles = updateKingTiles(kingTiles, blackKing, board, row, col);
-
-        List<Pair> attackingTiles = new ArrayList<Pair>();
-        List<Pair> blockTiles = new ArrayList<Pair>();
-//        attackingTiles = getAttackingTilesBlackKing(attackingTiles, board, row, col);
-        attackingTiles = getAttackingTiles("BLACK", attackingTiles, board, row, col);
-
-        for(int i=0; i < whitePieces.size(); i++) {
-            Piece p = whitePieces.get(i);
-            for(int j=0; j < kingTiles.size(); j++) {
-                Pair coord = kingTiles.get(j);
-                if (p.verifyPath(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    kingTiles.remove(coord);
-                    blockTiles.add(coord);
-                    j--;
-                }
-            }
-        }
-
-        for(int i=0; i < blackPieces.size(); i++) {
-            Piece p = blackPieces.get(i);
-            if (p.getType() != Type.KING) {
-                for (int j = 0; j < blockTiles.size(); j++) {
-                    Pair coord = blockTiles.get(j);
-                    if (p.verifyPath(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                        blockTiles.remove(coord);
-                        kingTiles.add(coord);
-                        j--;
-                    }
-                }
-            }
-            for(int k=0; k < attackingTiles.size(); k++) {
-                Pair coord = attackingTiles.get(k);
-                if (p.verifyPath(board, p.getRow(), p.getCol(), coord.getRow(), coord.getCol())) {
-                    attackingTiles.remove(coord);
-                    k--;
-                }
-            }
-        }
-
-        board.getTile(row,col).setPiece(blackKing);
-        if (kingTiles.size() == 0) {
-            for(int i=0; i<blackPieces.size(); i++) {
-                Piece p = blackPieces.get(i);
-                if (p.getType() != Type.KING && p.canMove(board)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
 
     public static void main (String args[]) {
         Gui gui = new Gui();
