@@ -47,6 +47,9 @@ public class Gui {
 
     private Color light = Color.decode("#FFFACD");
     private Color dark = Color.decode("#b77e31");
+    private Color highlight = Color.decode("#f5e942");
+    private int highlightRow = -1;
+    private int highlightCol = -1;
     private final static int num_tiles = chessBoard.getBoardSize()*chessBoard.getBoardSize();
     private final static int board_length = chessBoard.getBoardSize();
     private final static String iconPath = "src/Icons/";
@@ -61,8 +64,8 @@ public class Gui {
      */
     public Gui() {
         this.gameFrame = new JFrame("Chess");
-        playerOne = JOptionPane.showInputDialog(gameFrame,"Enter Player One Name: ", null);
-        playerTwo = JOptionPane.showInputDialog(gameFrame,"Enter Player Two Name: ", null);
+        playerOne = JOptionPane.showInputDialog(gameFrame,"Enter Player One Name (White): ", null);
+        playerTwo = JOptionPane.showInputDialog(gameFrame,"Enter Player Two Name (Black): ", null);
         playerOne = playerOne.toUpperCase();
         playerTwo = playerTwo.toUpperCase();
 
@@ -332,13 +335,13 @@ public class Gui {
          * Player One's turn because of an invalid move
          */
         public void setWhiteTurnInvalidMove() {
-            this.text.setText("INVALID MOVE. " + playerOne + "'S TURN");
+            this.text.setText("INVALID MOVE. " + playerOne + "'S TURN (WHITE)");
         }
         /**
          * Player Two's turn because of an invalid move
          */
         public void setBlackTurnInvalidMove() {
-            this.text.setText("INVALID MOVE. " + playerTwo + "'S TURN");
+            this.text.setText("INVALID MOVE. " + playerTwo + "'S TURN (BLACK)");
         }
 
         /**
@@ -442,21 +445,11 @@ public class Gui {
             this.blackWins++;
         }
         else if (chessBoard.checkMate(chessBoard, "BLACK", "WHITE")) {
-            textPanel.setWhiteCheckMate();
+            textPanel.setBlackCheckMate();
             endFlag = true;
-            this.blackWins++;
+            this.whiteWins++;
         }
-//        if (chessBoard.whiteCheckMate(chessBoard)) {
-//            textPanel.setWhiteCheckMate();
-//            endFlag = true;
-//            this.blackWins++;
-//        }
-//        else if (chessBoard.blackCheckMate(chessBoard)) {
-//            textPanel.setBlackCheckMate();
-//            endFlag = true;
-//            this.whiteWins++;
-//        }
-        else if (chessBoard.blackStaleMate(chessBoard) || chessBoard.whiteStaleMate(chessBoard)) {
+        else if (chessBoard.staleMate(chessBoard, "WHITE", "BLACK")) {
             textPanel.setStaleMate();
             endFlag = true;
         }
@@ -507,8 +500,13 @@ public class Gui {
                                 prevCol = col;
                                 if (movedPiece == null) {
                                     sourceTile = null;
+                                } else {
+                                    highlightRow = row;
+                                    highlightCol = col;
                                 }
                             } else {
+                                highlightRow = -1;
+                                highlightCol = -1;
                                 int row = tileId / board_length;
                                 int col = tileId % board_length;
                                 prevTargetRow = row;
@@ -604,6 +602,10 @@ public class Gui {
                 setBackground(light);
             } else {
                 setBackground(dark);
+            }
+            // highlights tile color of a chosen piece to move
+            if (row == highlightRow && col == highlightCol) {
+                setBackground(highlight);
             }
         }
     }
