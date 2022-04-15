@@ -2,60 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="377919be-3668-4e99-91a9-181b659c8b5a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/google-java-format.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Game/Board$Pair.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Game/Board.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Game/Tile.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Game/Type.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$10.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$11.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$BoardPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$TextPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$TilePanel$1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$TilePanel$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui$TilePanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Gui/Gui.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKBISHOP.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKKING.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKKNIGHT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKLEAPER.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKNIGHTRIDER.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKPAWN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKQUEEN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/BLACKROOK.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEBISHOP.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEKING.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEKNIGHT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITELEAPER.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITENIGHTRIDER.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEPAWN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEQUEEN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Icons/WHITEROOK.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Bishop.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/King.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Knight.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Leaper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/NightRider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Pawn.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Piece$Pair.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Piece.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Queen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Pieces/Rook.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess/Player/Player.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/Chess/Game/BoardTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Gui/Gui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Gui/Gui.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -219,10 +167,12 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="Game" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ivyle\IdeaProjects\Chess" />
+      <recent name="C:\Users\ivyle\IdeaProjects\Chess\src\Icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ivyle\Projects\Chess" />
       <recent name="C:\Users\ivyle\IdeaProjects\Chess\Tests" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
@@ -230,9 +180,8 @@
       <recent name="junit.framework.TestCase" />
       <recent name="groovy.util.GroovyTestCase" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\ivyle\IdeaProjects\Chess" />
-      <recent name="C:\Users\ivyle\IdeaProjects\Chess\src\Icons" />
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="Game" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Board">

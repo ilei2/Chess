@@ -324,12 +324,12 @@ public class Gui {
         /**
          * Player One's turn
          */
-        public void setWhiteTurn() { this.text.setText(playerOne + "'S TURN"); }
+        public void setWhiteTurn() { this.text.setText(playerOne + "'S TURN (WHITE)"); }
         /**
          * Player Two's turn
          */
         public void setBlackTurn() {
-            this.text.setText(playerTwo + "'S TURN");
+            this.text.setText(playerTwo + "'S TURN (BLACK)");
         }
         /**
          * Player One's turn because of an invalid move
@@ -348,14 +348,14 @@ public class Gui {
          * Player One is in check
          */
         public void setWhiteCheck() {
-            this.text.setText("CHECK ON " + playerOne + ". " + playerOne + "'S TURN");
+            this.text.setText("CHECK ON " + playerOne + ". " + playerOne + "'S TURN (WHITE)");
         }
 
         /**
          * Player Two is in check
          */
         public void setBlackCheck() {
-            this.text.setText("CHECK ON " + playerTwo + ". " + playerTwo + "'S TURN");
+            this.text.setText("CHECK ON " + playerTwo + ". " + playerTwo + "'S TURN (BLACK)");
         }
 
         /**
